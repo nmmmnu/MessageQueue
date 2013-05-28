@@ -10,10 +10,10 @@ File description:
 Server files:
 - **server.py** - server process using asyncore.dispatcher. Nothing fancy there.
 
-Protocol files:
+**./protocol/**:
 - **memcachedhandler.py** - handler implementing memcached telnet protocol using asynchat.async_chat. Fully memcached compatible, but supports only get, delete, set and quit.
 
-Processor files:
+**./processor/**:
 - **memcachedprocessor.py** - simple in memory key/value database implementation. It uses Python hashtable, e.g. {}
 - **queueprocessor.py** - implements in-memory queue. It uses hashtable of high-performance deque()'s
 
