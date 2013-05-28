@@ -18,8 +18,8 @@ Processor files:
 - **queueprocessor.py** - implements in-memory queue. It uses hashtable of high-performance deque()'s
 
 Start files:
-**memcachedserver.py** - starts new key/value server using **memcachedprocessor.py**
-**queueserver.py** - starts new queue server using **queueprocessor.py**
+- **memcachedserver.py** - starts new key/value server using **memcachedprocessor.py**
+- **queueserver.py** - starts new queue server using **queueprocessor.py**
 
 Usage
 =====
