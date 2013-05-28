@@ -2,9 +2,9 @@
 
 import asyncore
 
-from server             import Server
-from memcachedhandler   import MemcachedHandler   as ServerHandler
-from memcachedprocessor import MemcachedProcessor as Processor
+from server                        import Server
+from protocols.memcachedhandler    import MemcachedHandler   as ServerHandler
+from processors.memcachedprocessor import MemcachedProcessor as Processor
 
 
 

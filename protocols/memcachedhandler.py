@@ -1,9 +1,15 @@
+#
+# Memcached protocol implementation
+# Nikolay Mihaylov nmmm@nmmm.nu
+#
+
 # For Memcached telnet protocol see:
 # http://blog.elijaa.org/?post/2010/05/21/Memcached-telnet-command-summary
 
 
 
 import asynchat
+import time
 
 try:
 	from cStringIO import StringIO
@@ -13,14 +19,22 @@ except ImportError:
 
 
 class MemcachedHandler(asynchat.async_chat):
-	commands_with_data = ['set']
+	commands_with_data = ['set', 'add']
 	
 	def __init__(self, sock, addr, processor):
+		#  
+		#  Constructs new Memcached protocol handler
+		#  
+		#  @param sock : socket from asyncore
+		#  @param addr : address from asyncore
+		#  @param processor : processor class
+		#
 		asynchat.async_chat.__init__(self, sock=sock)
-		self.addr   = addr
+		self.addr    = addr
+		self.started = time.time()
 
-		self.head   = ""
-		self.data   = ""
+		self.head    = ""
+		self.data    = ""
 
 		self.processor = processor
 
@@ -127,6 +141,28 @@ class MemcachedHandler(asynchat.async_chat):
 			self.push("NOT_STORED\r\n")
 			return
 			
+		
+		
+		if command == "add":
+			# It is protocol responsibility to check the size.
+			try:
+				size = int(args[4])
+
+				if len(self.data) > size:
+					self.data = self.data[:size]
+			except:
+				pass
+			
+			key = args[1]
+			x = self.processor.add(key, self.data)
+			
+			if x:
+				self.push("STORED\r\n")
+				return
+		
+			self.push("NOT_STORED\r\n")
+			return
+			
 			
 
 		if command == "quit":
@@ -186,3 +222,5 @@ class MemcachedHandler(asynchat.async_chat):
 
 	def collect_incoming_data(self, data):
 		self.io.write(data)
+
+

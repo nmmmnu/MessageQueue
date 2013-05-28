@@ -1,19 +1,15 @@
-#!/usr/bin/python
-
-
-
 import asyncore
 import socket
 
-
-
-from memcachedhandler   import MemcachedHandler   as ServerHandler
-from memcachedprocessor import MemcachedProcessor as Processor
-
-
-
 class Server(asyncore.dispatcher):
 	def __init__(self, host, port, backlog=1):
+		#  
+		#  Constructs new Server using asyncore.dispatcher
+		#  
+		#  @param host : interface for listen
+		#  @param port : port for listen
+		#  @param host : backlog for the socket
+		#
 		asyncore.dispatcher.__init__(self)
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.set_reuse_addr()
@@ -22,21 +18,19 @@ class Server(asyncore.dispatcher):
 
 	def handle_accept(self):
 		socket, address = self.accept()
-		ServerHandler(socket, address, Processor())
-
-
-import sys
-
-if __name__ == "__main__":
-	try:
-		host = sys.argv[1]
-		port = int(sys.argv[2])
-	except:
-		host = "0.0.0.0"
-		port = 4000
-
-	s = Server(host, port)
-	asyncore.loop()
+		
+		self.spawn_handler(socket, address)
+	
+	def spawn_handler(self, socket, address):
+		#  
+		#  This method must be overriden and 
+		#  must return new ServerHandler object
+		#  
+		#  @param socket : socket from asyncore
+		#  @param address : address from asyncore
+		#
+		print "Call abstract method!!!"
+		#ServerHandler(socket, address, Processor())
 
 
 
