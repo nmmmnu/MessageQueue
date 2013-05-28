@@ -7,9 +7,19 @@ There is no query service yet, just key/value database.
 
 File description:
 
+Server files:
 - **server.py** - server process using asyncore.dispatcher. Nothing fancy there.
+
+Protocol files:
 - **memcachedhandler.py** - handler implementing memcached telnet protocol using asynchat.async_chat. Fully memcached compatible, but supports only get, delete, set and quit.
+
+Processor files:
 - **memcachedprocessor.py** - simple in memory key/value database implementation. It uses Python hashtable, e.g. {}
+- **queueprocessor.py** - implements in-memory queue. It uses hashtable of high-performance deque()'s
+
+Start files:
+**memcachedserver.py** - starts new key/value server using **memcachedprocessor.py**
+**queueserver.py** - starts new queue server using **queueprocessor.py**
 
 Usage
 =====
