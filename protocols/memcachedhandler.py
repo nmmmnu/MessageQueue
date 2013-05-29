@@ -19,7 +19,7 @@ except ImportError:
 
 
 class MemcachedHandler(asynchat.async_chat):
-	commands_with_data = ['set', 'add']
+	commands_with_data = ['set', 'add', "sismember"]
 	
 	def __init__(self, sock, addr, processor):
 		#  
@@ -108,6 +108,7 @@ class MemcachedHandler(asynchat.async_chat):
 			return
 		
 		
+		
 		if command == "delete":
 			key = args[1]
 			x = self.processor.delete(key)
@@ -118,7 +119,7 @@ class MemcachedHandler(asynchat.async_chat):
 			
 			self.push("NOT_FOUND\r\n")
 			return
-			
+		
 		
 		
 		if command == "set":
@@ -140,7 +141,7 @@ class MemcachedHandler(asynchat.async_chat):
 		
 			self.push("NOT_STORED\r\n")
 			return
-			
+		
 		
 		
 		if command == "add":
@@ -164,7 +165,45 @@ class MemcachedHandler(asynchat.async_chat):
 			return
 			
 			
+			
+		# Non standard command
+		if command == "scard":
+			key = args[1]
 
+			x = self.processor.len(key)
+
+			if x is None:
+				x = "0"
+
+			msg = "VALUE %s 0 %d\r\n%s\r\nEND\r\n" % (key, len(x), x)
+			self.push(msg)
+			return
+		
+		
+		
+		# Non standard command
+		if command == "sismember":
+			# It is protocol responsibility to check the size.
+			try:
+				size = int(args[4])
+
+				if len(self.data) > size:
+					self.data = self.data[:size]
+			except:
+				pass
+			
+			key = args[1]
+			x = self.processor.contains(key, self.data)
+			
+			if x:
+				self.push("MEMBER\r\n")
+				return
+		
+			self.push("NOT_MEMBER\r\n")
+			return
+			
+			
+			
 		if command == "quit":
 			self.push("QUIT\r\n")
 			self.close()

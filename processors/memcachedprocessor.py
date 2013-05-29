@@ -1,5 +1,7 @@
 
-class MemcachedProcessor:
+import processor
+
+class MemcachedProcessor(processor.Processor):
 	max_keys = 1024
 	
 	def __init__(self, max_keys = 1024):

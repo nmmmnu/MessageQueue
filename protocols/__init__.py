@@ -1,1 +1,3 @@
 import memcachedhandler
+import redishandler
+
