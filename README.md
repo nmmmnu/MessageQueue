@@ -1,9 +1,13 @@
 MessageQueue
 ============
 
-Pure Python implementation of Message Queue over memcached protocol.
+Pure Python implementation of Message Queue over memcached protocol or Redis protocol.
 
-There is no query service yet, just key/value database.
+There is query service in RAM and NoSQL key/value in RAM database.
+
+The NoSQL database is fully functional, but it was written for testing and educational purposes.
+
+Query service on disk still pending.
 
 File description:
 
