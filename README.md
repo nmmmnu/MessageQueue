@@ -1,31 +1,31 @@
 MessageQueue
 ============
 
-Pure Python implementation of Message Queue over memcached protocol or Redis protocol.
+Pure Python implementation of Disk based Message Queue over memcached protocol or Redis protocol.
 
-There is query service in RAM and NoSQL key/value in RAM database.
+Tuere are also queue services in RAM and NoSQL key/value in RAM database (get/set/del).
 
-The NoSQL database is fully functional, but it was written for testing and educational purposes.
-
-Query service on disk still pending.
+Queue service in RAM and the NoSQL database are fully functional, but they was written for testing and educational purposes.
 
 File description:
 
 Server files:
 - **server.py** - server process using asyncore.dispatcher. Nothing fancy there.
 
-**./protocol/**:
+./protocol/:
 - **memcachedhandler.py** - handler implementing memcached telnet protocol using asynchat.async_chat. Fully memcached compatible, but supports only get, delete, set, add and quit.
 - **redishandler.py** - handler implementing redis protocol using asynchat.async_chat. Fully redis compatible, but supports only spop, srem, sadd, sismember, scard and quit.
 
-**./processor/**:
-- **memcachedprocessor.py** - simple in memory key/value database implementation. It uses Python hashtable, e.g. {}
+./processor/:
+- **dbprocessor.py** - simple in memory key/value database implementation. It uses Python hashtable, e.g. {}
 - **queueprocessor.py** - implements in-memory queue. It uses hashtable of high-performance deque()'s
+- **diskqueueprocessor.py** - implements disk based queue. It uses two BerkleyDB files per queue.
 
 Start files:
 - **memcachedserver.py** - starts new key/value server using **memcachedprocessor.py**
 - **queueserver.py** - starts new queue server using **queueprocessor.py**
 - **redis_queueserver.py** - starts new queue server using **queueprocessor.py**
+- **redis_diskqueueserver.py** - starts new queue server using **diskqueueprocessor**
 
 Usage
 =====

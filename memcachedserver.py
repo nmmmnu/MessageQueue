@@ -4,7 +4,7 @@ import asyncore
 
 from server                        import Server
 from protocols.memcachedhandler    import MemcachedHandler   as ServerHandler
-from processors.memcachedprocessor import MemcachedProcessor as Processor
+from processors.dbprocessor        import DBProcessor        as Processor
 
 
 

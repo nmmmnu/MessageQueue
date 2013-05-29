@@ -1,7 +1,7 @@
 
 import processor
 
-class MemcachedProcessor(processor.Processor):
+class DBProcessor(processor.Processor):
 	max_keys = 1024
 	
 	def __init__(self, max_keys = 1024):
@@ -20,7 +20,7 @@ class MemcachedProcessor(processor.Processor):
 		#  @return : the value, or None if not inserted.
 		#  
 		try:
-			return MemcachedProcessor.mem[key]
+			return DBProcessor.mem[key]
 		except:
 			return None
 			
@@ -32,7 +32,7 @@ class MemcachedProcessor(processor.Processor):
 		#  @return : True if deleted, False if not exists.
 		#  
 		try:
-			del MemcachedProcessor.mem[key]
+			del DBProcessor.mem[key]
 			return True
 		except:
 			return False
@@ -46,10 +46,10 @@ class MemcachedProcessor(processor.Processor):
 		#  @param data : the value
 		#  @return : True if inserted, False if not inserted.
 		#  
-		if len(MemcachedProcessor.mem) >= self.max_keys:
+		if len(DBProcessor.mem) >= self.max_keys:
 			return False
 		
-		MemcachedProcessor.mem[key] = data
+		DBProcessor.mem[key] = data
 
 		return True
 		
@@ -63,13 +63,13 @@ class MemcachedProcessor(processor.Processor):
 		#  @param data : the value
 		#  @return : True if inserted, False if not inserted.
 		#  
-		if MemcachedProcessor.mem.get(key) :
+		if DBProcessor.mem.get(key) :
 			# Key exists
 			return False
 
 		return self.set(key, data)
 
 # static
-MemcachedProcessor.mem = {}
+DBProcessor.mem = {}
 
 

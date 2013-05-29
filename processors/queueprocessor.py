@@ -1,7 +1,9 @@
 
 from collections import deque
 
-class QueueProcessor:
+import processor
+
+class QueueProcessor(processor.Processor):
 	max_queues     = 1024
 	max_queue_size = 1024 * 32
 	
@@ -105,6 +107,39 @@ class QueueProcessor:
 					return True
 		
 		return self.set(key, data)
+
+	def len(self, key):
+		#  
+		#  Length of the queue
+		#
+		#  @param key : name of the queue
+		#  @return : queue size
+		#  
+		t = QueueProcessor.mem.get(key)
+
+		if t is not None:
+			deck, _ = t
+			return str(len(deck))
+
+		return "0"
+
+	def contains(self, key, data):
+		#  
+		#  Determine if queue contains the value
+		#
+		#  @param key : name of the queue
+		#  @param data : the value
+		#  @return : True if is member, False if not.
+		#  
+		t = QueueProcessor.mem.get(key)
+
+		if t is not None:
+			deck, _ = t
+			if data in deck:
+				return True
+
+		return False
+
 
 # static
 QueueProcessor.mem = {}
