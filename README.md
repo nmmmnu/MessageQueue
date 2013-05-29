@@ -45,41 +45,56 @@ Starts the server on specific interface, for example this command will start the
 Testing
 =======
 
-Memcached test:
+Memcached + database test:
 
 ```python
 import memcache
 mc = memcache.Client(['127.0.0.1:4000'])
 print mc.get('niki')
-None
+#None
 print mc.set('niki', 123)
-True
+#True
 print mc.get('niki')
-123
+#123
 ```
 
-Redis test:
+Redis + queue test with Python:
 
 ```python
 from redis import Redis
 r = Redis("localhost", 4000)
 print r.sadd('niki', "12")
-True
+#True
 print r.sadd('niki', "15")
-True
+#True
 print r.scard('niki')
-2
+#2
 print r.sismember('niki', 'abc')
-False
+#False
 print r.sismember('niki', '12')
-True
+#True
 print r.spop('niki')
-12
+#12
 print r.spop('niki')
-15
+#15
 print r.spop('niki')
-None
+#None
+```
+
+Redis + queue test with PHP:
+
+```php
+$r = new Redis();
+
+$r->connect("localhost", 4000);
+
+for ($i = 0; $i < 10; $i++)
+	$r->sadd("niki", "Item $i");
+
+echo "Size: " . $r->scard("niki") . "\n";
+
+while($x = $r->spop("niki"))
+	echo "$x\n";
 ```
 
 [eof]
-
