@@ -11,7 +11,8 @@ Server files:
 - **server.py** - server process using asyncore.dispatcher. Nothing fancy there.
 
 **./protocol/**:
-- **memcachedhandler.py** - handler implementing memcached telnet protocol using asynchat.async_chat. Fully memcached compatible, but supports only get, delete, set and quit.
+- **memcachedhandler.py** - handler implementing memcached telnet protocol using asynchat.async_chat. Fully memcached compatible, but supports only get, delete, set, add and quit.
+- **redishandler.py** - handler implementing redis protocol using asynchat.async_chat. Fully redis compatible, but supports only spop, srem, sadd, sismember, scard and quit.
 
 **./processor/**:
 - **memcachedprocessor.py** - simple in memory key/value database implementation. It uses Python hashtable, e.g. {}
@@ -20,6 +21,7 @@ Server files:
 Start files:
 - **memcachedserver.py** - starts new key/value server using **memcachedprocessor.py**
 - **queueserver.py** - starts new queue server using **queueprocessor.py**
+- **redis_queueserver.py** - starts new queue server using **queueprocessor.py**
 
 Usage
 =====
@@ -39,6 +41,8 @@ Starts the server on specific interface, for example this command will start the
 Testing
 =======
 
+Memcached test:
+
 ```python
 import memcache
 mc = memcache.Client(['127.0.0.1:4000'])
@@ -49,5 +53,29 @@ True
 print mc.get('niki')
 123
 ```
+
+Redis test:
+
+```python
+from redis import Redis
+r = Redis("localhost", 4000)
+print r.sadd('niki', "12")
+True
+print r.sadd('niki', "15")
+True
+print r.scard('niki')
+2
+print r.sismember('niki', 'abc')
+False
+print r.sismember('niki', '12')
+True
+print r.spop('niki')
+12
+print r.spop('niki')
+15
+print r.spop('niki')
+None
+```
+
 [eof]
 
