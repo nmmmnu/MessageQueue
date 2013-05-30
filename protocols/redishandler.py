@@ -29,8 +29,9 @@ class RedisHandler(asynchat.async_chat):
 		#  @param processor : processor class
 		#
 		asynchat.async_chat.__init__(self, sock=sock)
-		self.addr    = addr
-		self.started = time.time()
+		self.addr      = addr
+		self.started   = time.time()
+		self.lastping  = time.time()
 
 		self.processor = processor
 
@@ -74,6 +75,8 @@ class RedisHandler(asynchat.async_chat):
 
 
 	def cmd_parse(self):
+		self.lastping = time.time()
+		
 		args    = self.state_params
 		command = args[0].lower()
 		

@@ -30,11 +30,12 @@ class MemcachedHandler(asynchat.async_chat):
 		#  @param processor : processor class
 		#
 		asynchat.async_chat.__init__(self, sock=sock)
-		self.addr    = addr
-		self.started = time.time()
-
-		self.head    = ""
-		self.data    = ""
+		self.addr      = addr
+		self.started   = time.time()
+		self.lastping  = time.time()
+                               
+		self.head      = ""
+		self.data      = ""
 
 		self.processor = processor
 
@@ -88,6 +89,8 @@ class MemcachedHandler(asynchat.async_chat):
 
 
 	def cmd_parse(self):
+		self.lastping = time.time()
+		
 		args = self.cmd_parse_head()
 		
 		command = args[0].lower()
