@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-from server                          import Server                as _Server
-from protocols.redishandler          import RedisHandler          as ServerHandler
-from processors.diskqueueprocessor   import DiskQueueProcessor    as Processor
+from server					import Server			as _Server
+from protocols.redishandler			import RedisHandler		as ServerHandler
+from processors.randomdiskqueueprocessor	import RandomDiskQueueProcessor	as Processor
 
 
 
@@ -16,11 +16,8 @@ if __name__ == "__main__":
 	port            = 4000
 	max_clients     = 256
 	disconnect_idle = 60 * 5
-	
-	path_to_db      = "files/"
 
-	# Single queue = 2 file descriptors 
-	DiskQueueProcessor.max_queues = 100
+	path_to_db      = "queue_random.db"
 
 	server = Server(port, max_clients=max_clients, disconnect_idle=disconnect_idle)
 	server.path_to_db = path_to_db

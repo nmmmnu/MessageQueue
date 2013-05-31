@@ -4,7 +4,7 @@ from hashlib import md5
 
 import bsddb
 import time
-import resource
+#import resource
 #from uuid import uuid4
 
 
@@ -279,5 +279,5 @@ class DiskQueueProcessor(processor.Processor):
 
 # static
 DiskQueueProcessor.queues     = {}
-DiskQueueProcessor.max_queues = 512
+DiskQueueProcessor.max_queues = 256
 
