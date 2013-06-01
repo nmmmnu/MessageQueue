@@ -1,6 +1,6 @@
 # MessageQueue
 
-Pure Python implementation of Disk Based Message Queue over memcached protocol or Redis protocol.
+Pure Python implementation of "Disk Based Message Queue" over Memcached protocol or Redis protocol.
 
 There are also queue services in RAM and NoSQL key/value in RAM database (get/set/del).
 
@@ -11,6 +11,14 @@ There are one queue service that acts as well known "normal" FIFO...
 ... and there are some optimized queues that trade some functionality for some improvements.
 
 One of those is "Random Disk Based Queue" - instead of FIFO, it returns random items, but is much faster and uses much less storage.
+
+## Goals:
+
+- Messages will be strings. If you need to store something different, is up to you to serialize it.
+- A message must be delivered only once and must **NOT** be lost. A message can be lost only if there are uncorrectable error with data store, such disk failure.
+- Message queue must not get "stuck". This means queue add / pop operations must not depend / affect each other any errors with them, must be self-correctable.
+- Multiple queues must be supported.
+- Optionally store unique messages only once, in a way similar to Redis sets - sadd() / spop() / sismember()
 
 ## Files
 
