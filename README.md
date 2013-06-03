@@ -12,7 +12,7 @@ There are one queue service that acts as well known "normal" FIFO...
 
 One of those is "Random Disk Based Queue" - instead of FIFO, it returns random items, but is much faster and uses much less storage.
 
-## Goals:
+## Goals
 
 - Messages will be strings. If you need to store something different, is up to you to serialize it.
 - A message must be delivered only once and must **NOT** be lost. A message can be lost only if there are uncorrectable error with data store, such disk failure.
@@ -111,7 +111,7 @@ while($x = $r->spop("niki"))
 	echo "$x\n";
 ```
 
-## How **Disk Based Queue** store its files
+## How **Disk Based Queue** store its files?
 
 Disk based queue uses Berkeley DB.
 
@@ -156,7 +156,7 @@ ulimit -n 4096
 ```
 Theoretically Python can do this, but process must be started as root - by this reason we did not implemented this function.
 
-## How **Single Disk Based Queue** store its data and what are compromises there.
+## How **Single Disk Based Queue** store its data and what are the compromises there?
 
 This queue processor uses single Berkeley B-Tree db for all queues.
 
@@ -167,14 +167,14 @@ Because all data is in single file there are following advantages:
 - Easy backup of whole server.
 - When queue is empty, all queue keys are deleted.
 
-Respectively there are following disadvantages:
+The advantages are "traded" for following disadvantages:
 
 - There are no way to **delete** a queue.
 - There are no way to backup single queue.
 - There are no easy way to track the queue size. System supports this using incr / decr value in Berkeley db. Because this is **slow** you need to enable it when you construct new server. If disabled and queue exists size = 1 is returned.
 - When Berkeley db file gets big, system probably will slow down.
 
-## What is **Random Disk Based Queue**, how it store its data and what are compromises there.
+## What is **Random Disk Based Queue**, how it store its data and what are the compromises there?
 
 The idea for this queue processor is directly "borrowed" from Redis set. Queue contains only unique items and get() / spop() operation returns items in "random" order.
 
@@ -193,7 +193,7 @@ Advantages against **Single Disk Based Queue**:
 - at least 2x smaller database
 - works exactly as Redis set
 
-Disadvantages:
+The advantages are "traded" for following disadvantages:
 
 - There are no way to **delete** a queue.
 - There are no way to backup single queue.
