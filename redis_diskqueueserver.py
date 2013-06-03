@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import logging
+
 from server                          import Server                as _Server
 from protocols.redishandler          import RedisHandler          as ServerHandler
 from processors.diskqueueprocessor   import DiskQueueProcessor    as Processor
@@ -17,6 +19,8 @@ if __name__ == "__main__":
 	max_clients     = 256
 	disconnect_idle = 60 * 5
 	
+	logging.basicConfig(level=logging.INFO, format='%(asctime)s : %(levelname)s : %(message)s')
+
 	path_to_db      = "files/"
 
 	# Single queue = 2 file descriptors 

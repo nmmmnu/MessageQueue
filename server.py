@@ -2,6 +2,7 @@ import asyncore
 import socket
 import time
 import logging
+import sys
 
 class Server(asyncore.dispatcher):
 	max_clients     = 256
@@ -49,7 +50,7 @@ class Server(asyncore.dispatcher):
 			# and we close the socket here...
 			socket.close()
 			
-			logging.info("Too many connections, reject client %s" % address )
+			logging.info("Too many connections, reject client %s" % (address,) )
 			
 			return
 		
@@ -68,10 +69,8 @@ class Server(asyncore.dispatcher):
 		#  @param socket : socket from asyncore
 		#  @param address : address from asyncore
 		#
-		
-		print "Call abstract method!!!"
-		
-		logging.warn("Call abstract method!!!")
+				
+		logging.critical("Abstract method call!!!")
 		
 		#return ServerHandler(socket, address, Processor())
 
@@ -87,7 +86,7 @@ class Server(asyncore.dispatcher):
 		clients = []
 				
 		for client in self.clients:
-			if t - client.lastping > self.disconnect_idle:
+			if self.disconnect_idle and t - client.lastping > self.disconnect_idle:
 				logging.info("Manually disconnect client %s due to inactivity of %s seconds." % (client.address, self.disconnect_idle) )
 				client.close()
 			elif client.connected is False:
@@ -102,8 +101,7 @@ class Server(asyncore.dispatcher):
 		while True:
 			asyncore.loop(timeout=1, count=1)
 			
-			if self.disconnect_idle:
-				self.gc_handler()
+			self.gc_handler()
 
 
 
